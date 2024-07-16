@@ -1,45 +1,37 @@
-import "./App.css";
-
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import styled, { CSSProperties } from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
-import ReactLogo from "./assets/react.svg?react";
+import Logo from "./components/Logo";
+import Message from "./components/Message";
+import Table from "./components/Table";
 
-const ReadTheDocs = styled.p<{
-  $color?: CSSProperties["color"];
-}>`
-  color: ${({ $color }) => $color ?? "red"};
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #F5F5F5;
+  }
+`;
+
+const Wapper = styled.div`
+  width: 315px;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
 `;
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { t } = useTranslation("main");
+  const [message, setMessage] = useState<boolean>(false);
 
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src="/src/assets/react.svg" className="logo" alt="Vite logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <ReadTheDocs $color={"blue"}>
-        {t("title")}
-        <ReactLogo width={16} height={16} />
-      </ReadTheDocs>
-    </div>
+    <>
+      <Message message={message} setMessage={setMessage} />
+      <GlobalStyle />
+      <Wapper>
+        <Logo />
+        <Table setMessage={setMessage} />
+      </Wapper>
+    </>
   );
 }
 
