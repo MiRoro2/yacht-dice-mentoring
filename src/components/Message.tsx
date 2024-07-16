@@ -87,7 +87,13 @@ function Message({ message, setMessage }: messageType) {
               textAlign: "center",
             }}
           >
-            이미 다른 선택지를 클릭했거나 <br /> 조건에 맞는 주사위가 아닙니다.
+            <div style={{ marginBottom: "6px" }}>
+              이미 다른 선택지를 클릭했거나
+            </div>
+            <div style={{ marginLeft: "6px" }}>
+              {" "}
+              조건에 맞는 주사위가 아닙니다.
+            </div>
           </div>
         </Content>
         <OkButton onClick={okCheck}>확인</OkButton>

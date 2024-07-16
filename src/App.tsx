@@ -3,7 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 
 import Logo from "./components/Logo";
 import Message from "./components/Message";
-import Table from "./components/Table";
+import Table from "./components/tables/Table";
 
 const GlobalStyle = createGlobalStyle`
   body {
