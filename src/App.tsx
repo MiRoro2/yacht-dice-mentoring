@@ -1,9 +1,13 @@
 import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
+import Keep from "../src/components/Keep.tsx";
+import Result from "../src/components/Result.tsx";
+import Roll from "../src/components/Roll.tsx";
 import Logo from "./components/Logo";
 import Message from "./components/Message";
 import Table from "./components/tables/Table";
+import { DiceProvider } from "./DiceContext.tsx";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -11,13 +15,36 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const Wapper = styled.div`
-  width: 315px;
+const WholeWapper = styled.div`
+  width: 100vw;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Wapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const DiceCover = styled.div`
+  height: 705px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DiceBox = styled.div`
+  width: 600px;
+  height: 705px;
 
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
 `;
 
 function App() {
@@ -27,10 +54,21 @@ function App() {
     <>
       <Message message={message} setMessage={setMessage} />
       <GlobalStyle />
-      <Wapper>
+      <WholeWapper>
         <Logo />
-        <Table setMessage={setMessage} />
-      </Wapper>
+        <Wapper>
+          <Table setMessage={setMessage} />
+          <DiceCover>
+            <DiceBox>
+              <DiceProvider>
+                <Keep />
+                <Result />
+                <Roll />
+              </DiceProvider>
+            </DiceBox>
+          </DiceCover>
+        </Wapper>
+      </WholeWapper>
     </>
   );
 }

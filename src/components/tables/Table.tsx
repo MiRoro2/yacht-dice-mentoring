@@ -18,7 +18,7 @@ import Yacht from "../../../public/img/Yacht.svg";
 import TableBox from "./TableBox";
 
 const Background = styled.div`
-  width: 300px;
+  width: 380px;
   height: 705px;
 
   background: white;
@@ -28,6 +28,8 @@ const Background = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+
+  margin-left: 20px;
 `;
 
 const WholeTableWrapper = styled.div`
