@@ -156,9 +156,12 @@ type crownType = {
 
 type messageType = {
   setMessage: Dispatch<SetStateAction<boolean>>;
+  crown: crownType;
+  setCrown: Dispatch<SetStateAction<crownType>>;
+  setCount: Dispatch<SetStateAction<number>>;
 };
 
-function Table({ setMessage }: messageType) {
+function Table({ setMessage, crown, setCrown, setCount }: messageType) {
   const [Boxes, setBoxes] = useState<tableType[]>([
     { id: 0, score: 0, name: "Aces", img: Aces, chosen: "no" },
     { id: 1, score: 0, name: "Deuces", img: Deuces, chosen: "no" },
@@ -192,21 +195,17 @@ function Table({ setMessage }: messageType) {
     { id: 11, score: 0, name: "Yacht", img: Yacht, chosen: "no" },
   ]);
 
-  const [crown, setCrown] = useState<crownType>({
-    turn: 3,
-    chosenNumber: 0,
-    subTotal: 0,
-    total: 0,
-  });
-
   function editScore(name: string, id: number) {
     if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "no") {
-      Boxes[id].score += 3;
-      Boxes[id].chosen = "yes";
-      setBoxes([...Boxes]);
-      crown.total += Boxes[id].score;
-      crown.chosenNumber += 1;
-      setCrown(crown);
+      const copy = Boxes;
+      copy[id].score += 3;
+      copy[id].chosen = "yes";
+      setBoxes([...copy]);
+      setCrown({
+        ...crown,
+        total: crown.total + Boxes[id].score,
+        chosenNumber: crown.chosenNumber + 1,
+      });
       if (
         name === "Aces" ||
         name === "Deuces" ||
@@ -215,9 +214,14 @@ function Table({ setMessage }: messageType) {
         name === "Fives" ||
         name === "Sixes"
       ) {
-        crown.subTotal += Boxes[id].score;
-        setCrown(crown);
+        setCrown({
+          ...crown,
+          subTotal: crown.subTotal + Boxes[id].score,
+          total: crown.total + Boxes[id].score,
+          chosenNumber: crown.chosenNumber + 1,
+        });
       }
+      setCount(1); //누르면 0으로 바뀜.. 롤 안 했을 때 value를 설정해서 해결? --roll이 0이 되야지 turn이 0으로 안 바뀜
     } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
       setMessage(true);
     else if (crown.turn <= crown.chosenNumber) setMessage(true);
@@ -233,10 +237,16 @@ function Table({ setMessage }: messageType) {
           img={Boxes[k].img}
           score={Boxes[k].score}
           editScore={editScore}
+          keyValue={k}
+          key={k}
         />,
       );
     }
     return arr;
+  }
+
+  function test() {
+    console.log(crown.turn);
   }
 
   return (
@@ -247,14 +257,18 @@ function Table({ setMessage }: messageType) {
             <TopLeft>
               <FontOne>turn</FontOne>
               <div style={{ display: "flex" }}>
-                <FontTwo>{crown.turn}</FontTwo>
+                <FontTwo>
+                  {crown.turn - 1 === crown.chosenNumber
+                    ? crown.turn
+                    : crown.turn - 1}
+                </FontTwo>
                 <FontTwo style={{ fontSize: "25px", marginTop: "3px" }}>
                   /12
                 </FontTwo>
               </div>
             </TopLeft>
             <TopRight>
-              <FontThree>Crown1</FontThree>
+              <FontThree onClick={test}>Crown1</FontThree>
               <FontFour>(you)</FontFour>
             </TopRight>
           </div>

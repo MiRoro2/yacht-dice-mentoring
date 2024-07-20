@@ -57,11 +57,30 @@ const OkButton = styled.button`
 type messageType = {
   message: boolean;
   setMessage: Dispatch<SetStateAction<boolean>>;
+  crown: crownType;
 };
 
-function Message({ message, setMessage }: messageType) {
+type crownType = {
+  turn: number;
+  chosenNumber: number;
+  subTotal: number;
+  total: number;
+};
+
+function Message({ message, setMessage, crown }: messageType) {
   function okCheck() {
     setMessage(false);
+  }
+
+  let content: string[] = [];
+
+  if (crown.turn - 1 === crown.chosenNumber) {
+    content = [
+      "이미 다른 선택지를 클릭했거나",
+      "조건에 맞는 주사위가 아닙니다.",
+    ];
+  } else {
+    content = ["족보를 선택해주세요", ""];
   }
 
   if (!message) return null;
@@ -87,13 +106,10 @@ function Message({ message, setMessage }: messageType) {
               textAlign: "center",
             }}
           >
-            <div style={{ marginBottom: "6px" }}>
-              이미 다른 선택지를 클릭했거나
-            </div>
-            <div style={{ marginLeft: "6px" }}>
-              {" "}
-              조건에 맞는 주사위가 아닙니다.
-            </div>
+            <div style={{ marginBottom: "6px" }}></div>
+            {content[0]}
+            <div style={{ marginLeft: "6px" }}> </div>
+            {content[1]}
           </div>
         </Content>
         <OkButton onClick={okCheck}>확인</OkButton>

@@ -1,14 +1,35 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
+import EndRollButton from "../../public/img/EndRollButton.svg";
 import FirstRollButton from "../../public/img/FirstRollButton.svg";
 import LastRollButton from "../../public/img/LastRollButton.svg";
 import ReRollButton from "../../public/img/ReRollButton.svg";
 import { diceValueType, useDice } from "../DiceContext.tsx";
 
-const Roll = () => {
+type crownType = {
+  turn: number;
+  chosenNumber: number;
+  subTotal: number;
+  total: number;
+};
+
+type RollPropsType = {
+  crown: crownType;
+  setCrown: Dispatch<SetStateAction<crownType>>;
+  setMessage: Dispatch<SetStateAction<boolean>>;
+  count: number;
+  setCount: Dispatch<SetStateAction<number>>;
+};
+
+const Roll = ({
+  crown,
+  setCrown,
+  setMessage,
+  count,
+  setCount,
+}: RollPropsType) => {
   const { fiveDice, setFiveDice } = useDice();
-  const [count, setCount] = useState(1);
 
   const getRandomDicevalue = (id: number): diceValueType => {
     const values = Object.values(diceValueType).filter(
@@ -21,19 +42,21 @@ const Roll = () => {
   };
 
   const checkCount = () => {
-    if (count === 3) {
-      setCount(1);
+    if (count >= 3) {
+      setCrown({ ...crown, turn: crown.turn + 1 });
     }
   };
 
   const updateDice = () => {
-    const newDiceState = fiveDice.map((dice) => ({
-      ...dice,
-      diceValue: getRandomDicevalue(dice.id),
-    }));
-    setFiveDice(newDiceState);
-    setCount(count + 1);
-    checkCount();
+    if (crown.turn - 1 === crown.chosenNumber) {
+      const newDiceState = fiveDice.map((dice) => ({
+        ...dice,
+        diceValue: getRandomDicevalue(dice.id),
+      }));
+      setFiveDice(newDiceState);
+      setCount(count + 1);
+      checkCount();
+    } else setMessage(true);
   };
 
   return (
@@ -46,6 +69,7 @@ const Roll = () => {
         {count === 1 && <LollButton src={FirstRollButton}></LollButton>}
         {count === 2 && <LollButton src={ReRollButton}></LollButton>}
         {count === 3 && <LollButton src={LastRollButton}></LollButton>}
+        {count === 4 && <LollButton src={EndRollButton}></LollButton>}
       </RollButton>
     </RollBox>
   );

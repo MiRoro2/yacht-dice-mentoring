@@ -66,21 +66,23 @@ type BoxType = {
   img: string;
   score: number;
   editScore: editScoreType;
+  keyValue: number;
 };
 
-function TableBox({ name, id, img, score, editScore }: BoxType) {
+function TableBox({ name, id, img, score, editScore, keyValue }: BoxType) {
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TableClick
         onClick={() => {
           editScore(name, id);
         }}
+        key={keyValue + 10}
       >
-        <Left>
-          <LeftImg src={img} />
-          <LeftText>{name}</LeftText>
+        <Left key={keyValue + 20}>
+          <LeftImg src={img} key={keyValue + 30} />
+          <LeftText key={keyValue + 40}>{name}</LeftText>
         </Left>
-        <Right>{score}</Right>
+        <Right key={keyValue + 50}>{score}</Right>
       </TableClick>
     </div>
   );

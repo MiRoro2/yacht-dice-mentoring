@@ -47,23 +47,50 @@ const DiceBox = styled.div`
   align-items: center;
 `;
 
+type crownType = {
+  turn: number;
+  chosenNumber: number;
+  subTotal: number;
+  total: number;
+};
+
 function App() {
   const [message, setMessage] = useState<boolean>(false);
 
+  const [crown, setCrown] = useState<crownType>({
+    turn: 1,
+    chosenNumber: 0,
+    subTotal: 0,
+    total: 0,
+  });
+
+  const [count, setCount] = useState<number>(1);
+
   return (
     <>
-      <Message message={message} setMessage={setMessage} />
+      <Message message={message} setMessage={setMessage} crown={crown} />
       <GlobalStyle />
       <WholeWapper>
         <Logo />
         <Wapper>
-          <Table setMessage={setMessage} />
+          <Table
+            setMessage={setMessage}
+            crown={crown}
+            setCrown={setCrown}
+            setCount={setCount}
+          />
           <DiceCover>
             <DiceBox>
               <DiceProvider>
                 <Keep />
                 <Result />
-                <Roll />
+                <Roll
+                  crown={crown}
+                  setCrown={setCrown}
+                  setMessage={setMessage}
+                  count={count}
+                  setCount={setCount}
+                />
               </DiceProvider>
             </DiceBox>
           </DiceCover>
