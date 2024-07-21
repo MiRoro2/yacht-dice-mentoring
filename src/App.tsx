@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 
 import Keep from "../src/components/Keep.tsx";
@@ -8,6 +7,7 @@ import Logo from "./components/Logo";
 import Message from "./components/Message";
 import Table from "./components/tables/Table";
 import { DiceProvider } from "./DiceContext.tsx";
+import { TableProvider } from "./TableContext.tsx";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -47,56 +47,27 @@ const DiceBox = styled.div`
   align-items: center;
 `;
 
-type crownType = {
-  turn: number;
-  chosenNumber: number;
-  subTotal: number;
-  total: number;
-};
-
 function App() {
-  const [message, setMessage] = useState<boolean>(false);
-
-  const [crown, setCrown] = useState<crownType>({
-    turn: 1,
-    chosenNumber: 0,
-    subTotal: 0,
-    total: 0,
-  });
-
-  const [count, setCount] = useState<number>(1);
-
   return (
-    <>
-      <Message message={message} setMessage={setMessage} crown={crown} />
-      <GlobalStyle />
-      <WholeWapper>
-        <Logo />
-        <Wapper>
-          <Table
-            setMessage={setMessage}
-            crown={crown}
-            setCrown={setCrown}
-            setCount={setCount}
-          />
-          <DiceCover>
-            <DiceBox>
-              <DiceProvider>
+    <TableProvider>
+      <DiceProvider>
+        <Message />
+        <GlobalStyle />
+        <WholeWapper>
+          <Logo />
+          <Wapper>
+            <Table />
+            <DiceCover>
+              <DiceBox>
                 <Keep />
                 <Result />
-                <Roll
-                  crown={crown}
-                  setCrown={setCrown}
-                  setMessage={setMessage}
-                  count={count}
-                  setCount={setCount}
-                />
-              </DiceProvider>
-            </DiceBox>
-          </DiceCover>
-        </Wapper>
-      </WholeWapper>
-    </>
+                <Roll />
+              </DiceBox>
+            </DiceCover>
+          </Wapper>
+        </WholeWapper>
+      </DiceProvider>
+    </TableProvider>
   );
 }
 

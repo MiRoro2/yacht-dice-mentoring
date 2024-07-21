@@ -1,4 +1,5 @@
-import { Dispatch, SetStateAction } from "react";
+import { useDice } from "src/DiceContext";
+import { useTable } from "src/TableContext";
 import styled from "styled-components";
 
 const DarkBackground = styled.div`
@@ -54,33 +55,22 @@ const OkButton = styled.button`
   bottom: 1.5rem;
 `;
 
-type messageType = {
-  message: boolean;
-  setMessage: Dispatch<SetStateAction<boolean>>;
-  crown: crownType;
-};
+function Message() {
+  const { count } = useDice();
+  const { message, setMessage } = useTable();
 
-type crownType = {
-  turn: number;
-  chosenNumber: number;
-  subTotal: number;
-  total: number;
-};
-
-function Message({ message, setMessage, crown }: messageType) {
   function okCheck() {
     setMessage(false);
   }
 
   let content: string[] = [];
 
-  if (crown.turn - 1 === crown.chosenNumber) {
-    content = [
-      "이미 다른 선택지를 클릭했거나",
-      "조건에 맞는 주사위가 아닙니다.",
-    ];
-  } else {
-    content = ["족보를 선택해주세요", ""];
+  if (1 < count && count < 4) {
+    content = ["이미 선택한 족보입니다.", ""];
+  } else if (count === 4) {
+    content = ["족보 선택이 되지 않았습니다.", "새로운 족보를 선택해주세요"];
+  } else if (count === 1) {
+    content = ["주사위를 굴려주세요", ""];
   }
 
   if (!message) return null;

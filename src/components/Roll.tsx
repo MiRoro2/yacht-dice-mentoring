@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { useTable } from "src/TableContext.tsx";
 import styled from "styled-components";
 
 import EndRollButton from "../../public/img/EndRollButton.svg";
@@ -7,29 +7,9 @@ import LastRollButton from "../../public/img/LastRollButton.svg";
 import ReRollButton from "../../public/img/ReRollButton.svg";
 import { diceValueType, useDice } from "../DiceContext.tsx";
 
-type crownType = {
-  turn: number;
-  chosenNumber: number;
-  subTotal: number;
-  total: number;
-};
-
-type RollPropsType = {
-  crown: crownType;
-  setCrown: Dispatch<SetStateAction<crownType>>;
-  setMessage: Dispatch<SetStateAction<boolean>>;
-  count: number;
-  setCount: Dispatch<SetStateAction<number>>;
-};
-
-const Roll = ({
-  crown,
-  setCrown,
-  setMessage,
-  count,
-  setCount,
-}: RollPropsType) => {
-  const { fiveDice, setFiveDice } = useDice();
+const Roll = () => {
+  const { fiveDice, setFiveDice, count, setCount } = useDice();
+  const { setMessage } = useTable();
 
   const getRandomDicevalue = (id: number): diceValueType => {
     const values = Object.values(diceValueType).filter(
@@ -41,21 +21,14 @@ const Roll = ({
       : fiveDice[id - 1].diceValue;
   };
 
-  const checkCount = () => {
-    if (count >= 3) {
-      setCrown({ ...crown, turn: crown.turn + 1 });
-    }
-  };
-
   const updateDice = () => {
-    if (crown.turn - 1 === crown.chosenNumber) {
+    if (count < 4) {
       const newDiceState = fiveDice.map((dice) => ({
         ...dice,
         diceValue: getRandomDicevalue(dice.id),
       }));
       setFiveDice(newDiceState);
       setCount(count + 1);
-      checkCount();
     } else setMessage(true);
   };
 
@@ -98,6 +71,9 @@ const RollButton = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
 export default Roll;

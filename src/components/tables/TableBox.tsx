@@ -1,4 +1,8 @@
+import { diceActType, useDice } from "src/DiceContext";
+import { useTable } from "src/TableContext";
 import styled, { css } from "styled-components";
+
+import { CalcScore } from "../CalcScore";
 
 const tableLine = css`
   border: solid #b3b3b3;
@@ -58,31 +62,89 @@ const Right = styled.div`
   color: black;
 `;
 
-type editScoreType = { (x: string, y: number): void };
-
 type BoxType = {
-  name: string;
-  id: number;
-  img: string;
-  score: number;
-  editScore: editScoreType;
   keyValue: number;
 };
 
-function TableBox({ name, id, img, score, editScore, keyValue }: BoxType) {
+type crownType = {
+  turn: number;
+  chosenNumber: number;
+  subTotal: number;
+  total: number;
+  bonus: number;
+};
+
+function TableBox({ keyValue }: BoxType) {
+  const { fiveDice, setKeepValue, count, setCount } = useDice();
+  const { Boxes, setBoxes, crown, setCrown, setMessage } = useTable();
+
+  function EditScore(name: string, id: number) {
+    const resultScore = CalcScore(fiveDice, name, id);
+    const setCrownDefault = (id: number, copy: crownType, Bonus: number) => {
+      setCrown({
+        ...copy,
+        total: crown.total + Boxes[id].score + Bonus,
+        chosenNumber: crown.chosenNumber + 1,
+        turn: crown.turn + 1,
+      });
+    };
+
+    if (
+      crown.turn > crown.chosenNumber &&
+      Boxes[id].chosen === "no" &&
+      count > 1
+    ) {
+      fiveDice.map((dice) => (dice.diceAct = diceActType.active));
+      setKeepValue([]);
+      let Bonus: number = 0;
+      const copy = Boxes;
+      copy[id].score += resultScore;
+      copy[id].chosen = "yes";
+      setBoxes([...copy]);
+      if (crown.total + Boxes[id].score >= 35) {
+        const crownCopy = crown;
+        crownCopy.bonus = 35;
+        setCrown(crownCopy);
+        Bonus = 35;
+        if (crown.bonus === 35) Bonus = 0;
+      }
+      setCrownDefault(id, crown, Bonus);
+      if (
+        name === "Aces" ||
+        name === "Deuces" ||
+        name === "Threes" ||
+        name === "Fours" ||
+        name === "Fives" ||
+        name === "Sixes"
+      ) {
+        const copy = crown;
+        copy.subTotal += Boxes[id].score;
+        setCrownDefault(id, copy, Bonus);
+      }
+      setCount(1);
+      if (crown.turn === 12) {
+        const copy = crown;
+        copy.turn = 11;
+        setCrownDefault(id, copy, Bonus);
+      }
+    } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
+      setMessage(true);
+    else if (crown.turn > crown.chosenNumber && count === 1) setMessage(true);
+  }
+
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TableClick
         onClick={() => {
-          editScore(name, id);
+          EditScore(Boxes[keyValue].name, Boxes[keyValue].id);
         }}
         key={keyValue + 10}
       >
         <Left key={keyValue + 20}>
-          <LeftImg src={img} key={keyValue + 30} />
-          <LeftText key={keyValue + 40}>{name}</LeftText>
+          <LeftImg src={Boxes[keyValue].img} key={keyValue + 30} />
+          <LeftText key={keyValue + 40}>{Boxes[keyValue].name}</LeftText>
         </Left>
-        <Right key={keyValue + 50}>{score}</Right>
+        <Right key={keyValue + 50}>{Boxes[keyValue].score}</Right>
       </TableClick>
     </div>
   );

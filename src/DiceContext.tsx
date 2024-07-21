@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 
 export enum diceValueType {
   one = 1,
@@ -25,6 +32,8 @@ type DiceContextType = {
   setFiveDice: React.Dispatch<React.SetStateAction<diceState[]>>;
   keepValue: number[];
   setKeepValue: React.Dispatch<React.SetStateAction<number[]>>;
+  count: number;
+  setCount: Dispatch<SetStateAction<number>>;
 };
 
 const DiceContext = createContext<DiceContextType | undefined>(undefined);
@@ -50,10 +59,18 @@ export const DiceProvider = ({ children }: DiceProviderProps) => {
     { id: 5, diceValue: diceValueType.one, diceAct: diceActType.active },
   ]);
   const [keepValue, setKeepValue] = useState<number[]>([]);
+  const [count, setCount] = useState<number>(1);
 
   return (
     <DiceContext.Provider
-      value={{ fiveDice, setFiveDice, keepValue, setKeepValue }}
+      value={{
+        fiveDice,
+        setFiveDice,
+        keepValue,
+        setKeepValue,
+        count,
+        setCount,
+      }}
     >
       {children}
     </DiceContext.Provider>
