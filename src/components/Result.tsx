@@ -49,9 +49,11 @@ const Result = () => {
   return (
     <ResultBox>
       <ListOfDiceImg>
-        {fiveDice.map((dice) => (
-          <div key={dice.id}>{diceAppearing(dice)}</div>
-        ))}
+        {fiveDice.map((dice) =>
+          dice.diceAct === diceActType.active ? (
+            <div key={dice.id}>{diceAppearing(dice)}</div>
+          ) : null,
+        )}
       </ListOfDiceImg>
     </ResultBox>
   );

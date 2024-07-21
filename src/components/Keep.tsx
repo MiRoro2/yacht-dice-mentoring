@@ -27,9 +27,11 @@ const Keep = () => {
       <KeepMessage>keep</KeepMessage>
       <KeepBorder>
         <ListOfDiceImg>
-          {fiveDice.map((dice) => (
-            <div key={dice.id}>{diceAppearing(dice)}</div>
-          ))}
+          {fiveDice.map((dice) =>
+            dice.diceAct === diceActType.inactive ? (
+              <div key={dice.id}>{diceAppearing(dice)}</div>
+            ) : null,
+          )}
         </ListOfDiceImg>
       </KeepBorder>
     </KeepBox>
