@@ -6,7 +6,7 @@ import styled, { css } from "styled-components";
 import TableBox from "./TableBox";
 
 const Background = styled.div`
-  width: 380px;
+  width: 300px;
   height: 705px;
 
   background: white;

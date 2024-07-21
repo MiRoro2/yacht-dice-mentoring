@@ -15,35 +15,33 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const WholeWapper = styled.div`
+const Wrapper = styled.div`
   width: 100vw;
   height: 100vh;
   display: flex;
   flex-direction: column;
 `;
 
-const Wapper = styled.div`
+const GameSpace = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-`;
-
-const DiceCover = styled.div`
-  height: 705px;
+  height: 100%;
   width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  align-items: flex-start;
+  justify-content: space-between;
 `;
 
-const DiceBox = styled.div`
-  width: 600px;
-  height: 705px;
+const TableWrapper = styled.div`
+  width: 320px;
+  margin-right: 20px;
+`;
 
+const DiceWrapper = styled.div`
+  width: calc(100% - 340px);
+  height: 705px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -53,19 +51,19 @@ function App() {
       <DiceProvider>
         <Message />
         <GlobalStyle />
-        <WholeWapper>
+        <Wrapper>
           <Logo />
-          <Wapper>
-            <Table />
-            <DiceCover>
-              <DiceBox>
-                <Keep />
-                <Result />
-                <Roll />
-              </DiceBox>
-            </DiceCover>
-          </Wapper>
-        </WholeWapper>
+          <GameSpace>
+            <TableWrapper>
+              <Table />
+            </TableWrapper>
+            <DiceWrapper>
+              <Keep />
+              <Result />
+              <Roll />
+            </DiceWrapper>
+          </GameSpace>
+        </Wrapper>
       </DiceProvider>
     </TableProvider>
   );

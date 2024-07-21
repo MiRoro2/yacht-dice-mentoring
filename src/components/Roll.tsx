@@ -49,8 +49,8 @@ const Roll = () => {
 };
 
 const RollBox = styled.div`
-  width: 400px;
-  height: 140px;
+  width: 200px;
+  height: 82px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -62,10 +62,10 @@ const LollButton = styled.img`
 `;
 
 const RollButton = styled.div`
-  width: 100px;
-  height: 40px;
+  width: 200px;
+  height: 82px;
   margin-top: 0;
-  border-radius: 20px;
+  border-radius: 15px;
   background-color: #6e6e73;
   display: flex;
   flex-direction: column;
