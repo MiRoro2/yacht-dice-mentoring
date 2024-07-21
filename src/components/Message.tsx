@@ -57,7 +57,7 @@ const OkButton = styled.button`
 
 function Message() {
   const { count } = useDice();
-  const { message, setMessage } = useTable();
+  const { message, setMessage, crown } = useTable();
 
   function okCheck() {
     setMessage(false);
@@ -74,38 +74,72 @@ function Message() {
   }
 
   if (!message) return null;
-  return (
-    <DarkBackground>
-      <MessageBlock>
-        <Content>
-          <div
-            style={{
-              fontFamily: "pretendard-black",
-              fontSize: "2rem",
-              textAlign: "center",
-            }}
-          >
-            선택이 불가능합니다!
-          </div>
-          <div
-            style={{
-              fontFamily: "pretendard-regular",
-              fontSize: "1.4rem",
-              marginTop: "30px",
-              width: "320px",
-              textAlign: "center",
-            }}
-          >
-            <div style={{ marginBottom: "6px" }}></div>
-            {content[0]}
-            <div style={{ marginLeft: "6px" }}> </div>
-            {content[1]}
-          </div>
-        </Content>
-        <OkButton onClick={okCheck}>확인</OkButton>
-      </MessageBlock>
-    </DarkBackground>
-  );
+  if (crown.turn != crown.chosenNumber) {
+    return (
+      <DarkBackground>
+        <MessageBlock>
+          <Content>
+            <div
+              style={{
+                fontFamily: "pretendard-black",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
+            >
+              선택이 불가능합니다!
+            </div>
+            <div
+              style={{
+                fontFamily: "pretendard-regular",
+                fontSize: "1.4rem",
+                marginTop: "30px",
+                width: "320px",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ marginBottom: "6px" }}></div>
+              {content[0]}
+              <div style={{ marginLeft: "6px" }}> </div>
+              {content[1]}
+            </div>
+          </Content>
+          <OkButton onClick={okCheck}>확인</OkButton>
+        </MessageBlock>
+      </DarkBackground>
+    );
+  } else
+    return (
+      <DarkBackground>
+        <MessageBlock>
+          <Content>
+            <div
+              style={{
+                fontFamily: "pretendard-black",
+                fontSize: "2rem",
+                textAlign: "center",
+              }}
+            >
+              게임이 끝났습니다.
+            </div>
+            <div
+              style={{
+                fontFamily: "pretendard-regular",
+                fontSize: "1.4rem",
+                marginTop: "30px",
+                width: "320px",
+                textAlign: "center",
+              }}
+            >
+              <div style={{ marginBottom: "6px" }}></div>
+              축하합니다!
+              <div style={{ marginLeft: "6px" }}> </div>
+              당신의 점수는 {crown.total}점입니다.
+            </div>
+          </Content>
+          <OkButton onClick={okCheck}>확인</OkButton>
+        </MessageBlock>
+      </DarkBackground>
+    );
 }
 
 export default Message;

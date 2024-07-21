@@ -127,9 +127,8 @@ function TableBox({ keyValue }: BoxType) {
         copy.turn = 11;
         setCrownDefault(id, copy, Bonus);
       }
-    } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
-      setMessage(true);
-    else if (crown.turn > crown.chosenNumber && count === 1) setMessage(true);
+    } else setMessage(true);
+    if (crown.chosenNumber === 11) setMessage(true);
   }
 
   return (
