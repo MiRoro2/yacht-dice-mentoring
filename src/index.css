@@ -68,3 +68,43 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+@font-face {
+  font-family: "pretendard-black";
+  src: url("./woff/Pretendard-Black.woff");
+}
+
+@font-face {
+  font-family: "pretendard-bold";
+  src: url("./woff/Pretendard-Bold.woff");
+}
+
+@font-face {
+  font-family: "pretendard-extra-bold";
+  src: url("./woff/Pretendard-ExtraBold.woff");
+}
+
+@font-face {
+  font-family: "pretendard-extra-light";
+  src: url("./woff/Pretendard-ExtraLight.woff");
+}
+
+@font-face {
+  font-family: "pretendard-medium";
+  src: url("./woff/Pretendard-Medium.woff");
+}
+
+@font-face {
+  font-family: "pretendard-regular";
+  src: url("./woff/Pretendard-Regular.woff");
+}
+
+@font-face {
+  font-family: "pretendard-semibold";
+  src: url("./woff/Pretendard-SemiBold.woff");
+}
+
+@font-face {
+  font-family: "pretendard-thin";
+  src: url("./woff/Pretendard-Thin.woff");
+}

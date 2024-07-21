@@ -1,45 +1,73 @@
-import "./App.css";
+import styled, { createGlobalStyle } from "styled-components";
 
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import styled, { CSSProperties } from "styled-components";
+import Keep from "../src/components/Keep.tsx";
+import Result from "../src/components/Result.tsx";
+import Roll from "../src/components/Roll.tsx";
+import Logo from "./components/Logo";
+import Message from "./components/Message";
+import Table from "./components/tables/Table";
+import { DiceProvider } from "./DiceContext.tsx";
+import { TableProvider } from "./TableContext.tsx";
 
-import ReactLogo from "./assets/react.svg?react";
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #F5F5F5;
+  }
+`;
 
-const ReadTheDocs = styled.p<{
-  $color?: CSSProperties["color"];
-}>`
-  color: ${({ $color }) => $color ?? "red"};
+const WholeWapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Wapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`;
+
+const DiceCover = styled.div`
+  height: 705px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const DiceBox = styled.div`
+  width: 600px;
+  height: 705px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 
 function App() {
-  const [count, setCount] = useState(0);
-  const { t } = useTranslation("main");
-
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank" rel="noreferrer">
-          <img src="/src/assets/react.svg" className="logo" alt="Vite logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <ReadTheDocs $color={"blue"}>
-        {t("title")}
-        <ReactLogo width={16} height={16} />
-      </ReadTheDocs>
-    </div>
+    <TableProvider>
+      <DiceProvider>
+        <Message />
+        <GlobalStyle />
+        <WholeWapper>
+          <Logo />
+          <Wapper>
+            <Table />
+            <DiceCover>
+              <DiceBox>
+                <Keep />
+                <Result />
+                <Roll />
+              </DiceBox>
+            </DiceCover>
+          </Wapper>
+        </WholeWapper>
+      </DiceProvider>
+    </TableProvider>
   );
 }
 
