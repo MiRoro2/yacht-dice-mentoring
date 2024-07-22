@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { useTable } from "src/TableContext.tsx";
 import styled from "styled-components";
 
@@ -5,11 +6,23 @@ import EndRollButton from "../../public/img/EndRollButton.svg";
 import FirstRollButton from "../../public/img/FirstRollButton.svg";
 import LastRollButton from "../../public/img/LastRollButton.svg";
 import ReRollButton from "../../public/img/ReRollButton.svg";
-import { diceValueType, useDice } from "../DiceContext.tsx";
+import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
+import InactivateRoll from "./InactivateRoll.tsx";
 
 const Roll = () => {
   const { fiveDice, setFiveDice, count, setCount } = useDice();
   const { setMessage } = useTable();
+  const [rollable, setRollable] = useState(true);
+
+  useEffect(() => {
+    const isAnyActive =
+      fiveDice[0].diceAct === diceActType.active ||
+      fiveDice[1].diceAct === diceActType.active ||
+      fiveDice[2].diceAct === diceActType.active ||
+      fiveDice[3].diceAct === diceActType.active ||
+      fiveDice[4].diceAct === diceActType.active;
+    setRollable(isAnyActive);
+  }, [fiveDice, rollable]);
 
   const getRandomDicevalue = (id: number): diceValueType => {
     const values = Object.values(diceValueType).filter(
@@ -23,12 +36,18 @@ const Roll = () => {
 
   const updateDice = () => {
     if (count < 4) {
-      const newDiceState = fiveDice.map((dice) => ({
-        ...dice,
-        diceValue: getRandomDicevalue(dice.id),
-      }));
-      setFiveDice(newDiceState);
-      setCount(count + 1);
+      if (rollable) {
+        const newDiceState = fiveDice.map((dice) => ({
+          ...dice,
+          diceValue: getRandomDicevalue(dice.id),
+        }));
+        setFiveDice(newDiceState);
+        setCount(count + 1);
+        return;
+      } else {
+        InactivateRoll();
+        return;
+      }
     } else setMessage(true);
   };
 
