@@ -6,8 +6,8 @@ import styled, { css } from "styled-components";
 import TableBox from "./TableBox";
 
 const Background = styled.div`
-  width: 300px;
-  height: 705px;
+  width: 290px;
+  height: 700px;
 
   background: white;
 
@@ -22,7 +22,7 @@ const Background = styled.div`
 
 const WholeTableWrapper = styled.div`
   width: 265px;
-  height: 670px;
+  height: 675px;
 
   display: flex;
   flex-direction: column;

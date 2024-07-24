@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
-import { diceImgMap, diceState, getDiceImg, ListOfDiceImg } from "./Result.tsx";
+import { diceActType, useDice } from "../DiceContext.tsx";
+import { diceState, getDiceImg, ListOfDiceImg } from "./Result.tsx";
 
 const Keep = () => {
   const { fiveDice, setFiveDice, keepValue, setKeepValue, count } = useDice();
@@ -16,7 +16,7 @@ const Keep = () => {
     if (dice.diceAct === diceActType.inactive && count != 1)
       return (
         <li key={dice.id} onClick={() => inactivation(dice.id)}>
-          <img src={getDiceImg(dice.diceValue)} />
+          <DiceImg src={getDiceImg(dice.diceValue)} />
         </li>
       );
     else return null;
@@ -37,6 +37,16 @@ const Keep = () => {
     </KeepBox>
   );
 };
+
+const DiceImg = styled.img`
+  margin-left: 5px;
+  margin-right: 5px;
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0 15px #d9d9d9;
+    border-radius: 20px;
+  }
+`;
 
 const KeepBox = styled.div`
   width: 100%;
