@@ -36,6 +36,11 @@ type crownType = {
   bonus: number;
 };
 
+type preScoreType = {
+  id: number;
+  value: number | null;
+};
+
 type TableContextType = {
   Boxes: tableType[];
   setBoxes: Dispatch<SetStateAction<tableType[]>>;
@@ -43,6 +48,8 @@ type TableContextType = {
   setCrown: Dispatch<SetStateAction<crownType>>;
   message: boolean;
   setMessage: Dispatch<SetStateAction<boolean>>;
+  preScore: preScoreType[];
+  setPreScore: Dispatch<SetStateAction<preScoreType[]>>;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -103,6 +110,21 @@ export const TableProvider = ({ children }: TableProviderProps) => {
 
   const [message, setMessage] = useState<boolean>(false);
 
+  const [preScore, setPreScore] = useState<preScoreType[]>([
+    { id: 0, value: null },
+    { id: 1, value: null },
+    { id: 2, value: null },
+    { id: 3, value: null },
+    { id: 4, value: null },
+    { id: 5, value: null },
+    { id: 6, value: null },
+    { id: 7, value: null },
+    { id: 8, value: null },
+    { id: 9, value: null },
+    { id: 10, value: null },
+    { id: 11, value: null },
+  ]);
+
   return (
     <TableContext.Provider
       value={{
@@ -112,6 +134,8 @@ export const TableProvider = ({ children }: TableProviderProps) => {
         setCrown,
         message,
         setMessage,
+        preScore,
+        setPreScore,
       }}
     >
       {children}

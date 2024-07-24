@@ -10,8 +10,11 @@ const tableLine = css`
 
 const hoverStyle = css`
   &:hover {
-    background: #d9d9d9;
     cursor: pointer;
+    & > div > div {
+      font-size: 20px;
+      color: black;
+    }
   }
 `;
 
@@ -62,6 +65,12 @@ const Right = styled.div`
   color: black;
 `;
 
+const PreScoreFont = styled.div`
+  color: #d2d2d2;
+
+  font-size 17px;
+`;
+
 type BoxType = {
   keyValue: number;
 };
@@ -76,14 +85,14 @@ type crownType = {
 
 function TableBox({ keyValue }: BoxType) {
   const { fiveDice, setKeepValue, count, setCount } = useDice();
-  const { Boxes, setBoxes, crown, setCrown, setMessage } = useTable();
+  const { Boxes, setBoxes, crown, setCrown, setMessage, preScore } = useTable();
 
   function EditScore(name: string, id: number) {
     const resultScore = CalcScore(fiveDice, name, id);
-    const setCrownDefault = (id: number, copy: crownType, Bonus: number) => {
+    const setCrownDefault = (id: number, copy: crownType) => {
       setCrown({
         ...copy,
-        total: crown.total + Boxes[id].score + Bonus,
+        total: crown.total + Boxes[id].score,
         chosenNumber: crown.chosenNumber + 1,
         turn: crown.turn + 1,
       });
@@ -96,19 +105,16 @@ function TableBox({ keyValue }: BoxType) {
     ) {
       fiveDice.map((dice) => (dice.diceAct = diceActType.active));
       setKeepValue([]);
-      let Bonus: number = 0;
       const copy = Boxes;
       copy[id].score += resultScore;
       copy[id].chosen = "yes";
       setBoxes([...copy]);
-      if (crown.total + Boxes[id].score >= 35) {
-        const crownCopy = crown;
-        crownCopy.bonus = 35;
-        setCrown(crownCopy);
-        Bonus = 35;
-        if (crown.bonus === 35) Bonus = 0;
+      if (crown.total + Boxes[id].score >= 35 && crown.bonus === 0) {
+        crown.bonus = 35;
+        crown.total += 35;
+        setCrown(crown);
       }
-      setCrownDefault(id, crown, Bonus);
+      setCrownDefault(id, crown);
       if (
         name === "Aces" ||
         name === "Deuces" ||
@@ -119,18 +125,20 @@ function TableBox({ keyValue }: BoxType) {
       ) {
         const copy = crown;
         copy.subTotal += Boxes[id].score;
-        setCrownDefault(id, copy, Bonus);
+        setCrownDefault(id, copy);
       }
       setCount(1);
+      preScore.map((score) => (score.value = null));
       if (crown.turn === 12) {
         const copy = crown;
         copy.turn = 11;
-        setCrownDefault(id, copy, Bonus);
+        setCrownDefault(id, copy);
       }
     } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
       setMessage(true);
     else if (crown.turn > crown.chosenNumber && count === 1) setMessage(true);
   }
+  //값들 화면에 나타내는 함수
 
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -144,7 +152,15 @@ function TableBox({ keyValue }: BoxType) {
           <LeftImg src={Boxes[keyValue].img} key={keyValue + 30} />
           <LeftText key={keyValue + 40}>{Boxes[keyValue].name}</LeftText>
         </Left>
-        <Right key={keyValue + 50}>{Boxes[keyValue].score}</Right>
+        <Right key={keyValue + 50}>
+          {Boxes[keyValue].chosen === "no" ? (
+            <PreScoreFont key={keyValue + 60}>
+              {preScore[keyValue].value}
+            </PreScoreFont>
+          ) : (
+            Boxes[keyValue].score
+          )}
+        </Right>
       </TableClick>
     </div>
   );

@@ -41,7 +41,6 @@ const DiceWrapper = styled.div`
   height: 705px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   align-items: center;
 `;
 

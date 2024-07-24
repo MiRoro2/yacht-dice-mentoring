@@ -14,7 +14,7 @@ export interface diceState {
   diceAct: diceActType;
 }
 
-export const diceImgMap = {
+const diceImgMap = {
   [diceValueType.one]: dice1Img,
   [diceValueType.two]: dice2Img,
   [diceValueType.three]: dice3Img,
@@ -40,7 +40,7 @@ const Result = () => {
     if (dice.diceAct === diceActType.active && count != 1)
       return (
         <li key={dice.id} onClick={() => activation(dice.id)}>
-          <img src={getDiceImg(dice.diceValue)} />
+          <DiceImg src={getDiceImg(dice.diceValue)} />
         </li>
       );
     else return null;
@@ -59,8 +59,25 @@ const Result = () => {
   );
 };
 
+const DiceImg = styled.img`
+  width: 160px;
+  height: 160px;
+  margin-left: 10px;
+  margin-right: 10px;
+  &:hover {
+    margin-left: 0;
+    margin-right: 0;
+    width: 180px;
+    height: 180px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #d9d9d9;
+    border-radius: 20px;
+  }
+`;
+
 const ResultBox = styled.div`
   width: 100%;
+  height: 400px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -76,12 +93,6 @@ export const ListOfDiceImg = styled.ul`
   justify-content: center;
   padding: 0;
   margin: 0;
-  & > div {
-    margin-right: 10px;
-    &:last-child {
-      margin-right: 0;
-    }
-  }
 `;
 
 export default Result;

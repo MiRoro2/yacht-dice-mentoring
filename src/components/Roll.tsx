@@ -2,16 +2,20 @@ import { useEffect, useState } from "react";
 import { useTable } from "src/TableContext.tsx";
 import styled from "styled-components";
 
-import EndRollButton from "../../public/img/EndRollButton.svg";
-import FirstRollButton from "../../public/img/FirstRollButton.svg";
-import LastRollButton from "../../public/img/LastRollButton.svg";
-import ReRollButton from "../../public/img/ReRollButton.svg";
+import Refresh from "../../public/img/Refresh.svg";
 import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
+import { CalcScore } from "./CalcScore.tsx";
 import InactivateRoll from "./InactivateRoll.tsx";
+
+type diceState = {
+  id: number;
+  diceValue: diceValueType;
+  diceAct: diceActType;
+};
 
 const Roll = () => {
   const { fiveDice, setFiveDice, count, setCount } = useDice();
-  const { setMessage } = useTable();
+  const { Boxes, preScore, setPreScore, setMessage } = useTable();
   const [rollable, setRollable] = useState(true);
 
   useEffect(() => {
@@ -34,65 +38,124 @@ const Roll = () => {
       : fiveDice[id - 1].diceValue;
   };
 
+  const settingPreScore = (newDiceState: diceState[]) => {
+    Boxes.map(
+      (box) =>
+        (preScore[box.id].value = CalcScore(newDiceState, box.name, box.id)),
+    );
+    setPreScore([...preScore]);
+  };
+
   const updateDice = () => {
     if (count < 4) {
-      if (rollable) {
+      if (rollable || count === 1) {
         const newDiceState = fiveDice.map((dice) => ({
           ...dice,
           diceValue: getRandomDicevalue(dice.id),
         }));
         setFiveDice(newDiceState);
         setCount(count + 1);
+        settingPreScore(newDiceState);
         return;
-      } else {
+      } else if (!rollable && count != 1) {
         InactivateRoll();
         return;
       }
     } else setMessage(true);
   };
 
-  return (
-    <RollBox>
-      <RollButton
+  function rollContent(upText: string, downText: string) {
+    return (
+      <>
+        <RollAboveWrapper>
+          <RefreshImg src={Refresh} />
+          <RollText>{upText}</RollText>
+        </RollAboveWrapper>
+        <LeftText>{downText}</LeftText>
+      </>
+    );
+  }
+
+  function showRolling() {
+    return (
+      <div
         onClick={() => {
           updateDice();
         }}
       >
-        {count === 1 && <LollButton src={FirstRollButton}></LollButton>}
-        {count === 2 && <LollButton src={ReRollButton}></LollButton>}
-        {count === 3 && <LollButton src={LastRollButton}></LollButton>}
-        {count === 4 && <LollButton src={EndRollButton}></LollButton>}
-      </RollButton>
-    </RollBox>
-  );
+        {count === 1 && (
+          <RollButton color={true}>
+            {rollContent("Roll", `${4 - count} left`)}
+          </RollButton>
+        )}
+        {count != 1 && count != 4 && rollable && (
+          <RollButton color={false}>
+            {rollContent("Reroll", `${4 - count} left`)}
+          </RollButton>
+        )}
+        {count === 4 && rollable && (
+          <RollButton color={false} center={true}>
+            <RollText>Ended</RollText>
+          </RollButton>
+        )}
+        {!rollable && count != 1 && (
+          <RollButton color={false} center={true}>
+            <RollText>Inactive</RollText>
+          </RollButton>
+        )}
+      </div>
+    );
+  }
+  return showRolling();
 };
 
-const RollBox = styled.div`
-  width: 200px;
+const RollButton = styled.div<{ color: boolean; center?: boolean }>`
+  width: 193px;
   height: 82px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-`;
+  background: ${(props) => (props.color ? "#FF3B30" : "#6E6E73")};
+  border-radius: 10px;
 
-const LollButton = styled.img`
-  width: 200px;
-  height: 100px;
-`;
-
-const RollButton = styled.div`
-  width: 200px;
-  height: 82px;
-  margin-top: 0;
-  border-radius: 15px;
-  background-color: #6e6e73;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: ${(props) => (props.center ? "center;" : ";")}
+
   &:hover {
     cursor: pointer;
   }
+`;
+
+const RollAboveWrapper = styled.div`
+  height: 45%;
+  width: 70%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-top: 12px;
+`;
+
+const RefreshImg = styled.img`
+  width: 40px;
+  margin-right: 5px;
+`;
+
+const RollText = styled.div`
+  font-family: "Pretendard-Black";
+  font-size: 30px;
+  color: white;
+`;
+
+const LeftText = styled.div`
+  height: 20%;
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Pretendard-Regular";
+  font-size: 15px;
+  color: white;
 `;
 
 export default Roll;
