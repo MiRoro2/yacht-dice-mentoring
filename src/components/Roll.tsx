@@ -76,34 +76,37 @@ const Roll = () => {
     );
   }
 
-  return (
-    <div
-      onClick={() => {
-        updateDice();
-      }}
-    >
-      {count === 1 && rollable && (
-        <RollButton color={true}>
-          {rollContent("Roll", `${4 - count} left`)}
-        </RollButton>
-      )}
-      {count != 1 && count != 4 && rollable && (
-        <RollButton color={false}>
-          {rollContent("Reroll", `${4 - count} left`)}
-        </RollButton>
-      )}
-      {count === 4 && rollable && (
-        <RollButton color={false} center={true}>
-          <RollText>Ended</RollText>
-        </RollButton>
-      )}
-      {!rollable && (
-        <RollButton color={false} center={true}>
-          <RollText>Inactive</RollText>
-        </RollButton>
-      )}
-    </div>
-  );
+  function showRolling() {
+    return (
+      <div
+        onClick={() => {
+          updateDice();
+        }}
+      >
+        {count === 1 && (
+          <RollButton color={true}>
+            {rollContent("Roll", `${4 - count} left`)}
+          </RollButton>
+        )}
+        {count != 1 && count != 4 && rollable && (
+          <RollButton color={false}>
+            {rollContent("Reroll", `${4 - count} left`)}
+          </RollButton>
+        )}
+        {count === 4 && rollable && (
+          <RollButton color={false} center={true}>
+            <RollText>Ended</RollText>
+          </RollButton>
+        )}
+        {!rollable && count != 1 && (
+          <RollButton color={false} center={true}>
+            <RollText>Inactive</RollText>
+          </RollButton>
+        )}
+      </div>
+    );
+  }
+  return showRolling();
 };
 
 const RollButton = styled.div<{ color: boolean; center?: boolean }>`
