@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Refresh from "../../public/img/Refresh.svg";
 import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
 import { CalcScore } from "./CalcScore.tsx";
-import InactivateRoll from "./InactivateRoll.tsx";
 
 type diceState = {
   id: number;
@@ -58,7 +57,6 @@ const Roll = () => {
         settingPreScore(newDiceState);
         return;
       } else if (!rollable && count != 1) {
-        InactivateRoll();
         return;
       }
     } else setMessage(true);
@@ -69,6 +67,17 @@ const Roll = () => {
       <>
         <RollAboveWrapper>
           <RefreshImg src={Refresh} />
+          <RollText>{upText}</RollText>
+        </RollAboveWrapper>
+        <LeftText>{downText}</LeftText>
+      </>
+    );
+  }
+
+  function inactiveContent(upText: string, downText: string) {
+    return (
+      <>
+        <RollAboveWrapper>
           <RollText>{upText}</RollText>
         </RollAboveWrapper>
         <LeftText>{downText}</LeftText>
@@ -93,15 +102,15 @@ const Roll = () => {
             {rollContent("Reroll", `${4 - count} left`)}
           </RollButton>
         )}
-        {count === 4 && rollable && (
+        {count === 4 && (
           <RollButton color={false} center={true}>
             <RollText>Ended</RollText>
           </RollButton>
         )}
-        {!rollable && count != 1 && (
-          <RollButton color={false} center={true}>
-            <RollText>Inactive</RollText>
-          </RollButton>
+        {!rollable && count != 1 && count != 4 && (
+          <InactiveButton color={false}>
+            {inactiveContent("Inactive", `${4 - count} left`)}
+          </InactiveButton>
         )}
       </div>
     );
@@ -122,6 +131,29 @@ const RollButton = styled.div<{ color: boolean; center?: boolean }>`
 
   &:hover {
     cursor: pointer;
+  }
+`;
+
+const InactiveButton = styled(RollButton)`
+  background: #c9c9c9;
+
+  &:hover {
+    cursor: not-allowed;
+  }
+
+  &:hover::after {
+    content: "모든 주사위가 보관되어 Roll 할 수 없습니다. 적어도 하나의 주사위를 활성화하세요.";
+    z-index: 1;
+    position: fixed;
+    bottom: 50vh;
+    padding: 15px;
+
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    color: black;
+
+    font-size: 18px;
+    font-family: "pretendard-regular";
   }
 `;
 
