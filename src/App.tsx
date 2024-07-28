@@ -3,6 +3,7 @@ import styled, { createGlobalStyle } from "styled-components";
 import Keep from "../src/components/Keep.tsx";
 import Result from "../src/components/Result.tsx";
 import Roll from "../src/components/Roll.tsx";
+import EndMessage from "./components/EndMessage.tsx";
 import Logo from "./components/Logo";
 import Message from "./components/Message";
 import Table from "./components/tables/Table";
@@ -48,6 +49,7 @@ function App() {
   return (
     <TableProvider>
       <DiceProvider>
+        <EndMessage />
         <Message />
         <GlobalStyle />
         <Wrapper>
