@@ -50,6 +50,8 @@ type TableContextType = {
   setMessage: Dispatch<SetStateAction<boolean>>;
   preScore: preScoreType[];
   setPreScore: Dispatch<SetStateAction<preScoreType[]>>;
+  endMessage: boolean;
+  setEndMessage: Dispatch<SetStateAction<boolean>>;
 };
 
 const TableContext = createContext<TableContextType | undefined>(undefined);
@@ -109,6 +111,7 @@ export const TableProvider = ({ children }: TableProviderProps) => {
   });
 
   const [message, setMessage] = useState<boolean>(false);
+  const [endMessage, setEndMessage] = useState<boolean>(false);
 
   const [preScore, setPreScore] = useState<preScoreType[]>([
     { id: 0, value: null },
@@ -136,6 +139,8 @@ export const TableProvider = ({ children }: TableProviderProps) => {
         setMessage,
         preScore,
         setPreScore,
+        endMessage,
+        setEndMessage,
       }}
     >
       {children}

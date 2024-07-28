@@ -5,7 +5,6 @@ import styled from "styled-components";
 import Refresh from "../../public/img/Refresh.svg";
 import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
 import { CalcScore } from "./CalcScore.tsx";
-import InactivateRoll from "./InactivateRoll.tsx";
 
 type diceState = {
   id: number;
@@ -58,7 +57,6 @@ const Roll = () => {
         settingPreScore(newDiceState);
         return;
       } else if (!rollable && count != 1) {
-        InactivateRoll();
         return;
       }
     } else setMessage(true);
@@ -76,6 +74,17 @@ const Roll = () => {
     );
   }
 
+  function inactiveContent(upText: string, downText: string) {
+    return (
+      <>
+        <RollAboveWrapper>
+          <RollText>{upText}</RollText>
+        </RollAboveWrapper>
+        <LeftText>{downText}</LeftText>
+      </>
+    );
+  }
+
   function showRolling() {
     return (
       <div
@@ -84,24 +93,24 @@ const Roll = () => {
         }}
       >
         {count === 1 && (
-          <RollButton color={true}>
+          <RollButton $color={true}>
             {rollContent("Roll", `${4 - count} left`)}
           </RollButton>
         )}
         {count != 1 && count != 4 && rollable && (
-          <RollButton color={false}>
+          <RollButton $color={false}>
             {rollContent("Reroll", `${4 - count} left`)}
           </RollButton>
         )}
-        {count === 4 && rollable && (
-          <RollButton color={false} center={true}>
+        {count === 4 && (
+          <RollButton $color={false} $center={true}>
             <RollText>Ended</RollText>
           </RollButton>
         )}
-        {!rollable && count != 1 && (
-          <RollButton color={false} center={true}>
-            <RollText>Inactive</RollText>
-          </RollButton>
+        {!rollable && count != 1 && count != 4 && (
+          <InactiveButton $color={false}>
+            {inactiveContent("Inactive", `${4 - count} left`)}
+          </InactiveButton>
         )}
       </div>
     );
@@ -109,16 +118,16 @@ const Roll = () => {
   return showRolling();
 };
 
-const RollButton = styled.div<{ color: boolean; center?: boolean }>`
+const RollButton = styled.div<{ $color: boolean; $center?: boolean }>`
   width: 193px;
   height: 82px;
-  background: ${(props) => (props.color ? "#FF3B30" : "#6E6E73")};
+  background: ${(props) => (props.$color ? "#FF3B30" : "#6E6E73")};
   border-radius: 10px;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: ${(props) => (props.center ? "center;" : ";")}
+  justify-content: ${(props) => (props.$center ? "center;" : ";")}
 
   &:hover {
     cursor: pointer;
@@ -144,6 +153,25 @@ const RollText = styled.div`
   font-family: "Pretendard-Black";
   font-size: 30px;
   color: white;
+`;
+
+const InactiveButton = styled(RollButton)`
+  background: #c9c9c9;
+  &:hover {
+    cursor: not-allowed;
+  }
+  &:hover::after {
+    content: "모든 주사위가 보관되어 Roll 할 수 없습니다. 적어도 하나의 주사위를 활성화하세요.";
+    z-index: 1;
+    position: fixed;
+    bottom: 50vh;
+    padding: 15px;
+    border-radius: 3px;
+    border: 1px solid #c9c9c9;
+    color: black;
+    font-size: 18px;
+    font-family: "pretendard-regular";
+  }
 `;
 
 const LeftText = styled.div`

@@ -85,7 +85,15 @@ type crownType = {
 
 function TableBox({ keyValue }: BoxType) {
   const { fiveDice, setKeepValue, count, setCount } = useDice();
-  const { Boxes, setBoxes, crown, setCrown, setMessage, preScore } = useTable();
+  const {
+    Boxes,
+    setBoxes,
+    crown,
+    setCrown,
+    setMessage,
+    preScore,
+    setEndMessage,
+  } = useTable();
 
   function EditScore(name: string, id: number) {
     const resultScore = CalcScore(fiveDice, name, id);
@@ -130,9 +138,7 @@ function TableBox({ keyValue }: BoxType) {
       setCount(1);
       preScore.map((score) => (score.value = null));
       if (crown.turn === 12) {
-        const copy = crown;
-        copy.turn = 11;
-        setCrownDefault(id, copy);
+        setEndMessage(true);
       }
     } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
       setMessage(true);
