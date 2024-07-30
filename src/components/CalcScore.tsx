@@ -44,8 +44,10 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
     const check: number[] = [0, 0, 0, 0, 0];
     for (let k = 0; k < 5; k++) {
       sameDiceCheck(check, k);
-      if (check[k] >= 4) {
-        result = 4 * fiveDice[k].diceValue;
+    }
+    if (check[0] >= 4 || check[1] >= 4) {
+      for (let k = 0; k < 5; k++) {
+        result += fiveDice[k].diceValue;
       }
     }
   } else if (name === "Full House") {
