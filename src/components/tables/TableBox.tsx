@@ -117,7 +117,7 @@ function TableBox({ keyValue }: BoxType) {
       copy[id].score += resultScore;
       copy[id].chosen = "yes";
       setBoxes([...copy]);
-      if (crown.total + Boxes[id].score >= 35 && crown.bonus === 0) {
+      if (crown.total + Boxes[id].score >= 63 && crown.bonus === 0) {
         crown.bonus = 35;
         crown.total += 35;
         setCrown(crown);
