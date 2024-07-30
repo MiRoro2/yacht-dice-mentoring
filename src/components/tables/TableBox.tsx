@@ -138,6 +138,9 @@ function TableBox({ keyValue }: BoxType) {
       setCount(1);
       preScore.map((score) => (score.value = null));
       if (crown.turn === 12) {
+        const copy = crown;
+        copy.turn = 11;
+        setCrownDefault(id, copy);
         setEndMessage(true);
       }
     } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
