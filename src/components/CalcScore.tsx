@@ -71,7 +71,6 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
   } else if (name === "Small Straight") {
     const check: number[] = [0, 0, 0];
     continueNumberCheck(4, 3, check);
-    console.log(check);
     if (check[0] === 4 || check[1] === 4 || check[2] === 4) {
       console.log(check[0]);
       result = 15;
