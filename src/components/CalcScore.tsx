@@ -15,6 +15,21 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
       }
     });
   };
+  const continueNumberCheck = (
+    length: number,
+    NumberOfCase: number,
+    check: number[],
+  ) => {
+    for (let k = 1; k <= length; k++) {
+      fiveDice.map((dice) => {
+        for (let i = 0; i <= NumberOfCase - 1; i++) {
+          if (dice.diceValue === i + k && check[i] === k - 1) {
+            check[i] += 1;
+          }
+        }
+      });
+    }
+  };
 
   for (let k = 1; k <= 6; k++) {
     if (id === k - 1) {
@@ -29,8 +44,10 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
     const check: number[] = [0, 0, 0, 0, 0];
     for (let k = 0; k < 5; k++) {
       sameDiceCheck(check, k);
-      if (check[k] >= 4) {
-        result = 4 * fiveDice[k].diceValue;
+    }
+    if (check[0] >= 4 || check[1] >= 4) {
+      for (let k = 0; k < 5; k++) {
+        result += fiveDice[k].diceValue;
       }
     }
   } else if (name === "Full House") {
@@ -54,35 +71,16 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
       }
     }
   } else if (name === "Small Straight") {
-    const check: number[] = [0, 0, 0, 0, 0];
-    let finalCheck: number = 0;
-    for (let k = 1; k <= 5; k++) {
-      fiveDice.map((dice) => {
-        if (dice.diceValue === k) {
-          check[k - 1] = 1;
-        }
-      });
-    }
-    for (let k = 0; k < 5; k++) {
-      finalCheck += check[k];
-    }
-    if (finalCheck === 5) {
-      result = 30;
+    const check: number[] = [0, 0, 0];
+    continueNumberCheck(4, 3, check);
+    if (check[0] === 4 || check[1] === 4 || check[2] === 4) {
+      console.log(check[0]);
+      result = 15;
     }
   } else if (name === "Large Straight") {
-    const check: number[] = [0, 0, 0, 0, 0];
-    let finalCheck: number = 0;
-    for (let k = 2; k <= 6; k++) {
-      fiveDice.map((dice) => {
-        if (dice.diceValue === k) {
-          check[k - 2] = 1;
-        }
-      });
-    }
-    for (let k = 0; k < 5; k++) {
-      finalCheck += check[k];
-    }
-    if (finalCheck === 5) {
+    const check: number[] = [0, 0];
+    continueNumberCheck(5, 2, check);
+    if (check[0] === 5 || check[1] === 5) {
       result = 30;
     }
   } else if (name === "Yacht") {
