@@ -1,5 +1,3 @@
-import "../../index.css";
-
 import { useTable } from "src/contexts/TableContext";
 import styled, { css } from "styled-components";
 

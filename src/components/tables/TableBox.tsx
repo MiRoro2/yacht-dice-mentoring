@@ -67,6 +67,7 @@ const Right = styled.div`
 
 const PreScoreFont = styled.div`
   color: #d2d2d2;
+
   font-size: 17px;
 `;
 
@@ -84,15 +85,7 @@ type crownType = {
 
 function TableBox({ keyValue }: BoxType) {
   const { fiveDice, setKeepValue, count, setCount } = useDice();
-  const {
-    Boxes,
-    setBoxes,
-    crown,
-    setCrown,
-    setMessage,
-    preScore,
-    setEndMessage,
-  } = useTable();
+  const { Boxes, setBoxes, crown, setCrown, setMessage, preScore } = useTable();
 
   function EditScore(name: string, id: number) {
     const resultScore = CalcScore(fiveDice, name, id);
@@ -105,18 +98,14 @@ function TableBox({ keyValue }: BoxType) {
       });
     };
 
-    if (
-      crown.turn > crown.chosenNumber &&
-      Boxes[id].chosen === "no" &&
-      count > 1
-    ) {
+    if (crown.turn > crown.chosenNumber && !Boxes[id].isChosen && count > 1) {
       fiveDice.map((dice) => (dice.diceAct = diceActType.active));
       setKeepValue([]);
       const copy = Boxes;
       copy[id].score += resultScore;
-      copy[id].chosen = "yes";
+      copy[id].isChosen = true;
       setBoxes([...copy]);
-      if (crown.total + Boxes[id].score >= 63 && crown.bonus === 0) {
+      if (crown.total + Boxes[id].score >= 35 && crown.bonus === 0) {
         crown.bonus = 35;
         crown.total += 35;
         setCrown(crown);
@@ -140,14 +129,13 @@ function TableBox({ keyValue }: BoxType) {
         const copy = crown;
         copy.turn = 11;
         setCrownDefault(id, copy);
-        setEndMessage(true);
       }
-    } else if (crown.turn > crown.chosenNumber && Boxes[id].chosen === "yes")
+    } else if (crown.turn > crown.chosenNumber && Boxes[id].isChosen)
       setMessage(true);
     else if (crown.turn > crown.chosenNumber && count === 1) setMessage(true);
   }
-  //값들 화면에 나타내는 함수
 
+  // 값들 화면에 나타내는 함수
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TableClick
@@ -161,7 +149,7 @@ function TableBox({ keyValue }: BoxType) {
           <LeftText key={keyValue + 40}>{Boxes[keyValue].name}</LeftText>
         </Left>
         <Right key={keyValue + 50}>
-          {Boxes[keyValue].chosen === "no" ? (
+          {!Boxes[keyValue].isChosen ? (
             <PreScoreFont key={keyValue + 60}>
               {preScore[keyValue].value}
             </PreScoreFont>
