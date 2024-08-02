@@ -1,6 +1,6 @@
 import "../../index.css";
 
-import { useTable } from "src/TableContext";
+import { useTable } from "src/contexts/TableContext";
 import styled, { css } from "styled-components";
 
 import TableBox from "./TableBox";

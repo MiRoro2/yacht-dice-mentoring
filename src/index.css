@@ -76,35 +76,35 @@ button:focus-visible {
 
 @font-face {
   font-family: "pretendard-bold";
-  src: url("./woff/Pretendard-Bold.woff");
+  src: url("src/assets/fonts/Pretendard-Bold.woff");
 }
 
 @font-face {
   font-family: "pretendard-extra-bold";
-  src: url("./woff/Pretendard-ExtraBold.woff");
+  src: url("src/assets/fonts/Pretendard-ExtraBold.woff");
 }
 
 @font-face {
   font-family: "pretendard-extra-light";
-  src: url("./woff/Pretendard-ExtraLight.woff");
+  src: url("src/assets/fonts/Pretendard-ExtraLight.woff");
 }
 
 @font-face {
   font-family: "pretendard-medium";
-  src: url("./woff/Pretendard-Medium.woff");
+  src: url("src/assets/fonts/Pretendard-Medium.woff");
 }
 
 @font-face {
   font-family: "pretendard-regular";
-  src: url("./woff/Pretendard-Regular.woff");
+  src: url("src/assets/fonts/Pretendard-Regular.woff");
 }
 
 @font-face {
   font-family: "pretendard-semibold";
-  src: url("./woff/Pretendard-SemiBold.woff");
+  src: url("src/assets/fonts/Pretendard-SemiBold.woff");
 }
 
 @font-face {
   font-family: "pretendard-thin";
-  src: url("./woff/Pretendard-Thin.woff");
+  src: url("src/assets/fonts/Pretendard-Thin.woff");
 }

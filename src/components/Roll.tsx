@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { useTable } from "src/TableContext.tsx";
+import { useTable } from "src/contexts/TableContext.tsx";
 import styled from "styled-components";
 
 import Refresh from "../../public/img/Refresh.svg";
-import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
+import {
+  diceActType,
+  diceValueType,
+  useDice,
+} from "../contexts/DiceContext.tsx";
 import { CalcScore } from "./CalcScore.tsx";
 
 type diceState = {

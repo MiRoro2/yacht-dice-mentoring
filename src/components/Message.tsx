@@ -1,5 +1,5 @@
-import { useDice } from "src/DiceContext";
-import { useTable } from "src/TableContext";
+import { useDice } from "src/contexts/DiceContext";
+import { useTable } from "src/contexts/TableContext";
 import styled from "styled-components";
 
 const DarkBackground = styled.div`

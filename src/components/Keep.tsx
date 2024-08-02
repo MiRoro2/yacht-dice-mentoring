@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import { diceActType, useDice } from "../DiceContext.tsx";
+import { diceActType, useDice } from "../contexts/DiceContext.tsx";
 import { diceState, getDiceImg, ListOfDiceImg } from "./Result.tsx";
 
 const Keep = () => {

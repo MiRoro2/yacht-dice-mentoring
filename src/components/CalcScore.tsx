@@ -1,4 +1,4 @@
-import { diceActType, diceValueType } from "src/DiceContext";
+import { diceActType, diceValueType } from "src/contexts/DiceContext";
 
 type diceState = {
   id: number;

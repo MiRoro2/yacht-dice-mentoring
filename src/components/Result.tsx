@@ -6,7 +6,11 @@ import dice3Img from "../../public/img/Dice3.svg";
 import dice4Img from "../../public/img/Dice4.svg";
 import dice5Img from "../../public/img/Dice5.svg";
 import dice6Img from "../../public/img/Dice6.svg";
-import { diceActType, diceValueType, useDice } from "../DiceContext.tsx";
+import {
+  diceActType,
+  diceValueType,
+  useDice,
+} from "../contexts/DiceContext.tsx";
 
 export interface diceState {
   id: number;

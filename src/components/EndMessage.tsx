@@ -1,4 +1,4 @@
-import { useTable } from "src/TableContext";
+import { useTable } from "src/contexts/TableContext";
 import styled from "styled-components";
 
 const DarkBackground = styled.div`

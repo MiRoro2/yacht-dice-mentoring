@@ -1,5 +1,5 @@
-import { diceActType, useDice } from "src/DiceContext";
-import { useTable } from "src/TableContext";
+import { diceActType, useDice } from "src/contexts/DiceContext";
+import { useTable } from "src/contexts/TableContext";
 import styled, { css } from "styled-components";
 
 import { CalcScore } from "../CalcScore";
@@ -67,8 +67,7 @@ const Right = styled.div`
 
 const PreScoreFont = styled.div`
   color: #d2d2d2;
-
-  font-size 17px;
+  font-size: 17px;
 `;
 
 type BoxType = {
