@@ -1,49 +1,35 @@
+import assets from "src/constants/assets.ts";
 import styled from "styled-components";
 
-import dice1Img from "../../public/img/Dice1.svg";
-import dice2Img from "../../public/img/Dice2.svg";
-import dice3Img from "../../public/img/Dice3.svg";
-import dice4Img from "../../public/img/Dice4.svg";
-import dice5Img from "../../public/img/Dice5.svg";
-import dice6Img from "../../public/img/Dice6.svg";
-import {
-  diceActType,
-  diceValueType,
-  useDice,
-} from "../contexts/DiceContext.tsx";
-
-export interface diceState {
-  id: number;
-  diceValue: diceValueType;
-  diceAct: diceActType;
-}
+import { DiceValueType, useDice } from "../contexts/DiceContext.tsx";
+import { DiceState } from "./Roll.tsx";
 
 const diceImgMap = {
-  [diceValueType.one]: dice1Img,
-  [diceValueType.two]: dice2Img,
-  [diceValueType.three]: dice3Img,
-  [diceValueType.four]: dice4Img,
-  [diceValueType.five]: dice5Img,
-  [diceValueType.six]: dice6Img,
+  [DiceValueType.One]: assets.dices.dice1,
+  [DiceValueType.Two]: assets.dices.dice2,
+  [DiceValueType.Three]: assets.dices.dice3,
+  [DiceValueType.Four]: assets.dices.dice4,
+  [DiceValueType.Five]: assets.dices.dice5,
+  [DiceValueType.Six]: assets.dices.dice6,
 };
 
-export const getDiceImg = (value: diceValueType) => {
-  return diceImgMap[value] || "";
+export const getDiceImg = (value: DiceValueType) => {
+  return diceImgMap[value];
 };
 
 const Result = () => {
   const { fiveDice, setFiveDice, keepValue, setKeepValue, count } = useDice();
 
-  const activation = (id: number) => {
-    fiveDice[id - 1].diceAct = diceActType.inactive;
+  const deactivateDice = (id: number) => {
+    fiveDice[id - 1].isDiceActive = false;
     setFiveDice([...fiveDice]);
     setKeepValue([...keepValue, fiveDice[id - 1].diceValue]);
   };
 
-  const diceAppearing = (dice: diceState) => {
-    if (dice.diceAct === diceActType.active && count != 1)
+  const diceAppearing = (dice: DiceState) => {
+    if (dice.isDiceActive && count > 1)
       return (
-        <li key={dice.id} onClick={() => activation(dice.id)}>
+        <li key={dice.id} onClick={() => deactivateDice(dice.id)}>
           <DiceImg src={getDiceImg(dice.diceValue)} />
         </li>
       );
@@ -54,7 +40,7 @@ const Result = () => {
     <ResultBox>
       <ListOfDiceImg>
         {fiveDice.map((dice) =>
-          dice.diceAct === diceActType.active ? (
+          dice.isDiceActive ? (
             <div key={dice.id}>{diceAppearing(dice)}</div>
           ) : null,
         )}

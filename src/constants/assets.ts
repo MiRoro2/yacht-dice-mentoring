@@ -39,6 +39,7 @@ const assetsPaths = {
     smallStraight: "Small_Straight.svg",
     yacht: "Yacht.svg",
   },
+  refresh: "Refresh.svg",
 };
 
 const generatePaths = (basePath: string, obj: Assets): Assets => {

@@ -1,12 +1,6 @@
-import { diceActType, diceValueType } from "src/contexts/DiceContext";
+import { DiceState } from "./Roll";
 
-type diceState = {
-  id: number;
-  diceValue: diceValueType;
-  diceAct: diceActType;
-};
-
-export function CalcScore(fiveDice: diceState[], name: string, id: number) {
+export function CalcScore(fiveDice: DiceState[], name: string, id: number) {
   let result: number = 0;
   const sameDiceCheck = (check: number[], k: number) => {
     fiveDice.map((dice) => {
@@ -15,6 +9,7 @@ export function CalcScore(fiveDice: diceState[], name: string, id: number) {
       }
     });
   };
+
   const continueNumberCheck = (
     length: number,
     NumberOfCase: number,

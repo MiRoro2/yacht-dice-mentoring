@@ -8,12 +8,12 @@ import {
 } from "react";
 
 export enum DiceValueType {
-  one = 1,
-  two = 2,
-  three = 3,
-  four = 4,
-  five = 5,
-  six = 6,
+  One = 1,
+  Two = 2,
+  Three = 3,
+  Four = 4,
+  Five = 5,
+  Six = 6,
 }
 
 interface DiceState {
@@ -47,11 +47,11 @@ type DiceProviderProps = {
 
 export const DiceProvider = ({ children }: DiceProviderProps) => {
   const [fiveDice, setFiveDice] = useState<DiceState[]>([
-    { id: 1, diceValue: DiceValueType.one, isDiceActive: true },
-    { id: 2, diceValue: DiceValueType.one, isDiceActive: true },
-    { id: 3, diceValue: DiceValueType.one, isDiceActive: true },
-    { id: 4, diceValue: DiceValueType.one, isDiceActive: true },
-    { id: 5, diceValue: DiceValueType.one, isDiceActive: true },
+    { id: 1, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 2, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 3, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 4, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 5, diceValue: DiceValueType.One, isDiceActive: true },
   ]);
   const [keepValue, setKeepValue] = useState<number[]>([]);
   const [count, setCount] = useState<number>(1);
