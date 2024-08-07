@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import { useTable } from "src/contexts/TableContext.tsx";
 import styled from "styled-components";
 
-import Refresh from "../../public/img/Refresh.svg";
+import Refresh from "/assets/Refresh.svg";
+
 import { DiceValueType, useDice } from "../contexts/DiceContext.tsx";
-import { CalcScore } from "./CalcScore.tsx";
+import { calculateScore } from "./calculateScore.ts";
 
 export interface DiceState {
   id: number;
@@ -14,7 +15,7 @@ export interface DiceState {
 
 const Roll = () => {
   const { fiveDice, setFiveDice, count, setCount } = useDice();
-  const { Boxes, preScore, setPreScore, setMessage } = useTable();
+  const { boxes, preScore, setPreScore, setMessage } = useTable();
   const [rollable, setRollable] = useState(true);
 
   useEffect(() => {
@@ -39,9 +40,13 @@ const Roll = () => {
   };
 
   const settingPreScore = (newDiceState: DiceState[]) => {
-    Boxes.map(
+    boxes.map(
       (box) =>
-        (preScore[box.id].value = CalcScore(newDiceState, box.name, box.id)),
+        (preScore[box.id].value = calculateScore(
+          newDiceState,
+          box.name,
+          box.id,
+        )),
     );
     setPreScore([...preScore]);
   };
@@ -151,7 +156,7 @@ const RefreshImg = styled.img`
 `;
 
 const RollText = styled.div`
-  font-family: "Pretendard-Black";
+  font-weight: 900;
   font-size: 30px;
   color: white;
 `;
@@ -171,7 +176,6 @@ const InactiveButton = styled(RollButton)`
     border: 1px solid #c9c9c9;
     color: black;
     font-size: 18px;
-    font-family: "pretendard-regular";
   }
 `;
 
@@ -182,7 +186,6 @@ const LeftText = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-family: "Pretendard-Regular";
   font-size: 15px;
   color: white;
 `;

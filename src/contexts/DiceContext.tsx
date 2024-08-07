@@ -19,7 +19,7 @@ export enum DiceValueType {
 interface DiceState {
   id: number;
   diceValue: DiceValueType;
-  isDiceActive: boolean;
+  isDiceActive: boolean; // "active" | "inactive"
 }
 
 type DiceContextType = {

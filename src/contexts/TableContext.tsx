@@ -6,6 +6,7 @@ import {
   useContext,
   useState,
 } from "react";
+import { Hands } from "src/constants/types";
 
 import {
   INITIAL_PRESCORE_VALUES,
@@ -15,12 +16,12 @@ import {
 export interface Table {
   id: number;
   score: number;
-  name: string;
+  name: Hands;
   img: string;
   isChosen: boolean;
 }
 
-interface User {
+export interface System {
   turn: number;
   chosenNumber: number;
   subTotal: number;
@@ -34,10 +35,10 @@ export interface PreScore {
 }
 
 interface TableContext {
-  Boxes: Table[];
+  boxes: Table[];
   setBoxes: Dispatch<SetStateAction<Table[]>>;
-  crown: User;
-  setCrown: Dispatch<SetStateAction<User>>;
+  system: System;
+  setSystem: Dispatch<SetStateAction<System>>;
   message: boolean;
   setMessage: Dispatch<SetStateAction<boolean>>;
   preScore: PreScore[];
@@ -53,8 +54,8 @@ interface TableProviderProps {
 }
 
 export const TableProvider = ({ children }: TableProviderProps) => {
-  const [Boxes, setBoxes] = useState<Table[]>(INITIAL_TABLE_VALUES);
-  const [crown, setCrown] = useState<User>({
+  const [boxes, setBoxes] = useState<Table[]>(INITIAL_TABLE_VALUES);
+  const [system, setSystem] = useState<System>({
     turn: 1,
     chosenNumber: 0,
     subTotal: 0,
@@ -68,10 +69,10 @@ export const TableProvider = ({ children }: TableProviderProps) => {
   return (
     <TableContext.Provider
       value={{
-        Boxes,
+        boxes,
         setBoxes,
-        crown,
-        setCrown,
+        system,
+        setSystem,
         message,
         setMessage,
         preScore,

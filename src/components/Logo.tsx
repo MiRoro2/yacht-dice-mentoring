@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-import LogoImg from "../../public/img/yacht dice 🎲.png";
+import LogoImg from "/assets/yacht dice 🎲.png";
 
 const LogoBlock = styled.div`
   width: 100vw;

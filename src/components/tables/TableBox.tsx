@@ -1,8 +1,10 @@
-import { diceActType, useDice } from "src/contexts/DiceContext";
-import { useTable } from "src/contexts/TableContext";
+import SCORE_PRESETS from "src/constants/scorePresets";
+import { Hands } from "src/constants/types";
+import { useDice } from "src/contexts/DiceContext";
+import { System, useTable } from "src/contexts/TableContext";
 import styled, { css } from "styled-components";
 
-import { CalcScore } from "../CalcScore";
+import { calculateScore } from "../calculateScore";
 
 const tableLine = css`
   border: solid #b3b3b3;
@@ -42,7 +44,7 @@ const LeftImg = styled.img`
 `;
 
 const LeftText = styled.div`
-  font-family: "pretendard-extra-bold";
+  font-weight: 800;
   font-size: 17px;
   color: grey;
 
@@ -60,7 +62,7 @@ const Right = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-family: "pretendard-extra-bold";
+  font-weight: 800;
   font-size: 17px;
   color: black;
 `;
@@ -75,64 +77,70 @@ type BoxType = {
   keyValue: number;
 };
 
-type crownType = {
-  turn: number;
-  chosenNumber: number;
-  subTotal: number;
-  total: number;
-  bonus: number;
-};
-
 function TableBox({ keyValue }: BoxType) {
   const { fiveDice, setKeepValue, count, setCount } = useDice();
-  const { Boxes, setBoxes, crown, setCrown, setMessage, preScore } = useTable();
+  const { boxes, setBoxes, system, setSystem, setMessage, preScore } =
+    useTable();
 
-  function EditScore(name: string, id: number) {
-    const resultScore = CalcScore(fiveDice, name, id);
-    const setCrownDefault = (id: number, copy: crownType) => {
-      setCrown({
-        ...copy,
-        total: crown.total + Boxes[id].score,
-        chosenNumber: crown.chosenNumber + 1,
-        turn: crown.turn + 1,
+  function writeScore(name: Hands, id: number) {
+    const resultScore = calculateScore(fiveDice, name, id);
+
+    const setSystemDefault = (id: number, system: System) => {
+      setSystem({
+        ...system,
+        total: system.total + boxes[id].score,
+        chosenNumber: system.chosenNumber + 1,
+        turn: system.turn + 1,
       });
     };
 
-    if (crown.turn > crown.chosenNumber && !Boxes[id].isChosen && count > 1) {
-      fiveDice.map((dice) => (dice.diceAct = diceActType.active));
+    if (system.turn > system.chosenNumber && !boxes[id].isChosen && count > 1) {
+      fiveDice.map((dice) => (dice.isDiceActive = true));
+
       setKeepValue([]);
-      const copy = Boxes;
-      copy[id].score += resultScore;
-      copy[id].isChosen = true;
-      setBoxes([...copy]);
-      if (crown.total + Boxes[id].score >= 35 && crown.bonus === 0) {
-        crown.bonus = 35;
-        crown.total += 35;
-        setCrown(crown);
-      }
-      setCrownDefault(id, crown);
+
+      const _boxes = boxes;
+      _boxes[id].score += resultScore;
+      _boxes[id].isChosen = true;
+
+      setBoxes([..._boxes]);
+
+      const applyBonus = () => {
+        if (system.total + boxes[id].score >= 35 && system.bonus === 0) {
+          setSystem((system) => ({
+            ...system,
+            bonus: SCORE_PRESETS.bonusScore,
+            total: (system.total += SCORE_PRESETS.bonusScore),
+          }));
+        }
+        setSystemDefault(id, system);
+      };
+      applyBonus();
+
       if (
-        name === "Aces" ||
-        name === "Deuces" ||
-        name === "Threes" ||
-        name === "Fours" ||
-        name === "Fives" ||
-        name === "Sixes"
+        name === Hands.Aces ||
+        name === Hands.Deuces ||
+        name === Hands.Threes ||
+        name === Hands.Fours ||
+        name === Hands.Fives ||
+        name === Hands.Sixes
       ) {
-        const copy = crown;
-        copy.subTotal += Boxes[id].score;
-        setCrownDefault(id, copy);
+        setSystemDefault(id, {
+          ...system,
+          subTotal: system.subTotal + boxes[id].score,
+        });
       }
       setCount(1);
       preScore.map((score) => (score.value = null));
-      if (crown.turn === 12) {
-        const copy = crown;
-        copy.turn = 11;
-        setCrownDefault(id, copy);
+
+      if (system.turn === SCORE_PRESETS.maxTurn) {
+        const _system = system;
+        _system.turn = SCORE_PRESETS.maxTurn - 1;
+        setSystemDefault(id, _system);
       }
-    } else if (crown.turn > crown.chosenNumber && Boxes[id].isChosen)
+    } else if (system.turn > system.chosenNumber && boxes[id].isChosen)
       setMessage(true);
-    else if (crown.turn > crown.chosenNumber && count === 1) setMessage(true);
+    else if (system.turn > system.chosenNumber && count === 1) setMessage(true);
   }
 
   // 값들 화면에 나타내는 함수
@@ -140,21 +148,18 @@ function TableBox({ keyValue }: BoxType) {
     <div style={{ display: "flex", flexDirection: "column" }}>
       <TableClick
         onClick={() => {
-          EditScore(Boxes[keyValue].name, Boxes[keyValue].id);
+          writeScore(boxes[keyValue].name, boxes[keyValue].id);
         }}
-        key={keyValue + 10}
       >
-        <Left key={keyValue + 20}>
-          <LeftImg src={Boxes[keyValue].img} key={keyValue + 30} />
-          <LeftText key={keyValue + 40}>{Boxes[keyValue].name}</LeftText>
+        <Left>
+          <LeftImg src={boxes[keyValue].img} />
+          <LeftText>{boxes[keyValue].name}</LeftText>
         </Left>
-        <Right key={keyValue + 50}>
-          {!Boxes[keyValue].isChosen ? (
-            <PreScoreFont key={keyValue + 60}>
-              {preScore[keyValue].value}
-            </PreScoreFont>
+        <Right>
+          {!boxes[keyValue].isChosen ? (
+            <PreScoreFont>{preScore[keyValue].value}</PreScoreFont>
           ) : (
-            Boxes[keyValue].score
+            boxes[keyValue].score
           )}
         </Right>
       </TableClick>

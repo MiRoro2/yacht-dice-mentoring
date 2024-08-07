@@ -51,7 +51,6 @@ const TopLeft = styled.div`
 `;
 
 const FontOne = styled.div`
-  font-family: "pretendard-regular";
   font-size: 18px;
   color: grey;
 
@@ -60,7 +59,7 @@ const FontOne = styled.div`
 `;
 
 const FontTwo = styled.div`
-  font-family: "pretendard-black";
+  font-weight: 900;
   font-size: 35px;
   color: black;
 `;
@@ -79,13 +78,13 @@ const TopRight = styled.div`
 `;
 
 const FontThree = styled.div`
-  font-family: "pretendard-extra-bold";
+  font-weight: 800;
   font-size: 17px;
   color: grey;
 `;
 
 const FontFour = styled.div`
-  font-family: "pretendard-medium";
+  font-weight: 500;
   font-size: 12px;
   color: grey;
 `;
@@ -100,7 +99,7 @@ const Left = styled.div`
   display: flex;
   align-items: center;
 
-  font-family: "pretendard-extra-bold";
+  font-weight: 800;
   font-size: 17px;
   color: grey;
 `;
@@ -120,21 +119,21 @@ const Right = styled.div`
   align-items: center;
   justify-content: center;
 
-  font-family: "pretendard-extra-bold";
+  font-weight: 800;
   font-size: 17px;
   color: black;
 `;
 
-function Table() {
-  const { crown } = useTable();
-
-  function repeat(start: number, n: number) {
-    const arr = [];
-    for (let k = start; k < start + n; k++) {
-      arr.push(<TableBox keyValue={k} key={k} />);
-    }
-    return arr;
+function repeat(start: number, n: number) {
+  const arr = [];
+  for (let k = start; k < start + n; k++) {
+    arr.push(<TableBox keyValue={k} key={k} />);
   }
+  return arr;
+}
+
+function Table() {
+  const { system } = useTable();
 
   return (
     <Background>
@@ -144,38 +143,44 @@ function Table() {
             <TopLeft>
               <FontOne>turn</FontOne>
               <div style={{ display: "flex" }}>
-                <FontTwo>{crown.turn}</FontTwo>
+                <FontTwo>{system.turn}</FontTwo>
                 <FontTwo style={{ fontSize: "25px", marginTop: "3px" }}>
                   /12
                 </FontTwo>
               </div>
             </TopLeft>
             <TopRight>
-              <FontThree>Crown1</FontThree>
+              <FontThree>system1</FontThree>
               <FontFour>(you)</FontFour>
             </TopRight>
           </div>
+
           {repeat(0, 6)}
+
           <div style={{ display: "flex" }}>
             <Left style={{ background: "#F5F5F7" }}>
               <LeftMargin>Subtotal</LeftMargin>
             </Left>
-            <Right style={{ background: "#F5F5F7" }}>{crown.subTotal}</Right>
+            <Right style={{ background: "#F5F5F7" }}>{system.subTotal}</Right>
           </div>
+
           <div style={{ display: "flex" }}>
             <Left style={{ background: "#F5F5F7" }}>
               <LeftMargin>+35 Bonus</LeftMargin>
             </Left>
-            <Right style={{ background: "#F5F5F7" }}>{crown.bonus}</Right>
+            <Right style={{ background: "#F5F5F7" }}>{system.bonus}</Right>
           </div>
         </Cover>
+
         <Cover>{repeat(6, 1)}</Cover>
+
         <Cover style={{ flexDirection: "column" }}>{repeat(7, 5)}</Cover>
+
         <Cover>
           <Left style={{ background: "#F5F5F7" }}>
             <LeftMargin>Total</LeftMargin>
           </Left>
-          <Right style={{ background: "#F5F5F7" }}>{crown.total}</Right>
+          <Right style={{ background: "#F5F5F7" }}>{system.total}</Right>
         </Cover>
       </WholeTableWrapper>
     </Background>

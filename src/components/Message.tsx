@@ -47,7 +47,7 @@ const OkButton = styled.button`
   border-radius: 2px;
 
   color: white;
-  font-family: "pretendard-semibold";
+  font-weight: 700;
   font-size: 1rem;
 
   position: absolute;
@@ -80,7 +80,7 @@ function Message() {
         <Content>
           <div
             style={{
-              fontFamily: "pretendard-black",
+              fontWeight: 900,
               fontSize: "2rem",
               textAlign: "center",
             }}
@@ -89,7 +89,6 @@ function Message() {
           </div>
           <div
             style={{
-              fontFamily: "pretendard-regular",
               fontSize: "1.4rem",
               marginTop: "30px",
               width: "320px",

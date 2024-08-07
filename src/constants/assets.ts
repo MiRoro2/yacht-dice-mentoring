@@ -1,5 +1,3 @@
-import path from "path";
-
 interface Assets {
   [key: string]: string | Assets;
 }
@@ -42,19 +40,19 @@ const assetsPaths = {
   refresh: "Refresh.svg",
 };
 
-const generatePaths = (basePath: string, obj: Assets): Assets => {
+function generatePaths(basePath: string, obj: Assets): Assets {
   const result: Assets = {};
 
   for (const key in obj) {
     if (typeof obj[key] === "object") {
-      result[key] = generatePaths(path.join(basePath, key), obj[key] as Assets);
+      result[key] = generatePaths(`${basePath}/${key}`, obj[key] as Assets);
     } else {
-      result[key] = path.join(basePath, obj[key] as string);
+      result[key] = `${basePath}/${obj[key] as string}`;
     }
   }
 
   return result;
-};
+}
 
 const baseAssetsPath = "/assets";
 
