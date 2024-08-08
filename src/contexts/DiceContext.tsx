@@ -7,29 +7,24 @@ import {
   useState,
 } from "react";
 
-export enum diceValueType {
-  one = 1,
-  two = 2,
-  three = 3,
-  four = 4,
-  five = 5,
-  six = 6,
+export enum DiceValueType {
+  One = 1,
+  Two = 2,
+  Three = 3,
+  Four = 4,
+  Five = 5,
+  Six = 6,
 }
 
-export enum diceActType {
-  active = "active",
-  inactive = "inactive",
-}
-
-type diceState = {
+interface DiceState {
   id: number;
-  diceValue: diceValueType;
-  diceAct: diceActType;
-};
+  diceValue: DiceValueType;
+  isDiceActive: boolean; // "active" | "inactive"
+}
 
 type DiceContextType = {
-  fiveDice: diceState[];
-  setFiveDice: React.Dispatch<React.SetStateAction<diceState[]>>;
+  fiveDice: DiceState[];
+  setFiveDice: React.Dispatch<React.SetStateAction<DiceState[]>>;
   keepValue: number[];
   setKeepValue: React.Dispatch<React.SetStateAction<number[]>>;
   count: number;
@@ -51,12 +46,12 @@ type DiceProviderProps = {
 };
 
 export const DiceProvider = ({ children }: DiceProviderProps) => {
-  const [fiveDice, setFiveDice] = useState<diceState[]>([
-    { id: 1, diceValue: diceValueType.one, diceAct: diceActType.active },
-    { id: 2, diceValue: diceValueType.one, diceAct: diceActType.active },
-    { id: 3, diceValue: diceValueType.one, diceAct: diceActType.active },
-    { id: 4, diceValue: diceValueType.one, diceAct: diceActType.active },
-    { id: 5, diceValue: diceValueType.one, diceAct: diceActType.active },
+  const [fiveDice, setFiveDice] = useState<DiceState[]>([
+    { id: 1, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 2, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 3, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 4, diceValue: DiceValueType.One, isDiceActive: true },
+    { id: 5, diceValue: DiceValueType.One, isDiceActive: true },
   ]);
   const [keepValue, setKeepValue] = useState<number[]>([]);
   const [count, setCount] = useState<number>(1);

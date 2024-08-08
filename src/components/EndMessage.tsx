@@ -1,4 +1,5 @@
-import { useTable } from "src/TableContext";
+import SCORE_PRESETS from "src/constants/scorePresets";
+import { useTable } from "src/contexts/TableContext";
 import styled from "styled-components";
 
 const DarkBackground = styled.div`
@@ -37,7 +38,7 @@ const Title = styled.div`
 
   background: white;
 
-  font-family: "Pretendard-Black";
+  font-weight: 900;
 `;
 
 const Score = styled.div`
@@ -52,7 +53,7 @@ const Score = styled.div`
   justify-content: center;
   align-items: center;
 
-  font-family: "Pretendard-Black";
+  font-weight: 900;
   font-size: 35px;
 `;
 
@@ -94,7 +95,7 @@ const BodyContent = styled.div`
   display: flex;
   align-items: center;
 
-  font-family: "Pretendard-Bold";
+  font-weight: 800;
 
   margin-bottom: 10px;
   &:nth-child(1) {
@@ -122,20 +123,20 @@ const OkButton = styled.button`
   margin-top: 10px;
 
   color: white;
-  font-family: "pretendard-semibold";
+  font-weight: 700;
   font-size: 1rem;
 `;
 
 function EndMessage() {
-  const { endMessage, setEndMessage, crown, Boxes, setBoxes, setCrown } =
+  const { endMessage, setEndMessage, system, setSystem, boxes, setBoxes } =
     useTable();
 
-  function okCheck() {
-    Boxes.map(
-      (box) => ((Boxes[box.id].score = 0), (Boxes[box.id].chosen = "no")),
+  function resetGame() {
+    boxes.map(
+      (box) => ((boxes[box.id].score = 0), (boxes[box.id].isChosen = false)),
     );
-    setBoxes([...Boxes]);
-    setCrown({
+    setBoxes([...boxes]);
+    setSystem({
       turn: 1,
       chosenNumber: 0,
       subTotal: 0,
@@ -150,10 +151,10 @@ function EndMessage() {
     <DarkBackground>
       <MessageBlock>
         <Title>게임 결과</Title>
-        <Score>총점: {crown.total}</Score>
+        <Score>총점: {system.total}</Score>
         <Body>
           <div>
-            {Boxes.map(
+            {boxes.map(
               (box) =>
                 box.score != 0 && (
                   <BodyContent key={box.id}>
@@ -163,14 +164,14 @@ function EndMessage() {
                   </BodyContent>
                 ),
             )}
-            {crown.bonus === 35 && (
+            {system.bonus === SCORE_PRESETS.bonusScore && (
               <BodyContent>
                 <BodyFont>+35 Bonus</BodyFont>
               </BodyContent>
             )}
           </div>
         </Body>
-        <OkButton onClick={okCheck}>다시하기</OkButton>
+        <OkButton onClick={resetGame}>다시하기</OkButton>
       </MessageBlock>
     </DarkBackground>
   );

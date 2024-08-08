@@ -7,8 +7,8 @@ import EndMessage from "./components/EndMessage.tsx";
 import Logo from "./components/Logo";
 import Message from "./components/Message";
 import Table from "./components/tables/Table";
-import { DiceProvider } from "./DiceContext.tsx";
-import { TableProvider } from "./TableContext.tsx";
+import { DiceProvider } from "./contexts/DiceContext.tsx";
+import { TableProvider } from "./contexts/TableContext.tsx";
 
 const GlobalStyle = createGlobalStyle`
   body {

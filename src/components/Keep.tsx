@@ -1,21 +1,25 @@
 import styled from "styled-components";
 
-import { diceActType, useDice } from "../DiceContext.tsx";
-import { diceState, getDiceImg, ListOfDiceImg } from "./Result.tsx";
+import { useDice } from "../contexts/DiceContext.tsx";
+import { getDiceImg, ListOfDiceImg } from "./Result.tsx";
+import { DiceState } from "./Roll.tsx";
 
 const Keep = () => {
   const { fiveDice, setFiveDice, keepValue, setKeepValue, count } = useDice();
 
-  const inactivation = (id: number) => {
-    fiveDice[id - 1].diceAct = diceActType.active;
-    setFiveDice([...fiveDice]);
+  const activation = (id: number) => {
+    setFiveDice((fiveDice) => {
+      const _fiveDice = fiveDice;
+      _fiveDice[id - 1].isDiceActive = true;
+      return [..._fiveDice];
+    });
     setKeepValue([...keepValue, fiveDice[id - 1].diceValue]);
   };
 
-  const diceAppearing = (dice: diceState) => {
-    if (dice.diceAct === diceActType.inactive && count != 1)
+  const diceAppearing = (dice: DiceState) => {
+    if (!dice.isDiceActive && count != 1)
       return (
-        <li key={dice.id} onClick={() => inactivation(dice.id)}>
+        <li key={dice.id} onClick={() => activation(dice.id)}>
           <DiceImg src={getDiceImg(dice.diceValue)} />
         </li>
       );
@@ -28,7 +32,7 @@ const Keep = () => {
       <KeepBorder>
         <ListOfDiceImg>
           {fiveDice.map((dice) =>
-            dice.diceAct === diceActType.inactive ? (
+            !dice.isDiceActive ? (
               <div key={dice.id}>{diceAppearing(dice)}</div>
             ) : null,
           )}
